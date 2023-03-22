@@ -1,0 +1,45 @@
+User
+-login: username(mobileno.)
+	password
+-signup: First Name
+	 Last Name
+	 mobile
+	 email
+	 password
+	 vaccination
+-selecting package(initially it should show all available packages, then customer can specifically find packages to his destination)
+	:destination
+	 budget
+         duration
+	 preferred transportion
+	 DateOfReservation
+-Booking package
+	:Package_ID
+         No.of People
+	 ModeOfPayment
+-Enquiry Registration(only when booking is complete)
+	:Subject
+	 Description
+	 Date
+
+
+Admin
+-login: username(mobile)
+	password
+-Create Package: (everything here should be assigned by the employee)  
+		   Package_name
+		   Description
+	           Destination
+		   Package_type
+	           ModeOfTransport
+	           VehicleType
+		   NoOfSeats
+		   Price
+		   PositivityRate
+-Booked Packages: (should be able to view how many of each package is booked)
+		  (should be able to view the money received from each package)
+-Enquiry Answer: (should be able to view the registered enquiry, grouped by date)
+		 :Remarks
+ 		  Date
+		  
+		   

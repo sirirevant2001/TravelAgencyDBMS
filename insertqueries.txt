@@ -1,0 +1,185 @@
+drop database travelagency;
+create database travelagency;
+use travelagency;
+
+CREATE TABLE Employee
+(
+  Emp_ID INT(7) NOT NULL AUTO_INCREMENT,
+  FNAMAE VARCHAR(20) NOT NULL,
+  LNAME VARCHAR(20) NOT NULL,
+  Salary int(6) NOT NULL,
+  Mobile varchar(12) UNIQUE,
+  E_Mail varchar(32) unique,
+  PRIMARY KEY (Emp_ID)
+);
+
+CREATE TABLE Package
+(
+  Package_Name varchar(50) UNIQUE,
+  Package_Type varchar(15) NOT NULL,
+  Description varchar(100) NOT NULL,
+  Destination varchar(20) NOT NULL,
+  Price INT(6) NOT NULL,
+  P_ID INT(7) NOT NULL AUTO_INCREMENT ,
+  Transport_Mode VARCHAR(15) NOT NULL,
+  Seats INT(3) NOT NULL,
+  Vehicle_Type VARCHAR(20) NOT NULL,
+  Positivity_Rate INT(2) NOT NULL,
+  Reservation_date DATE NOT NULL,
+  PRIMARY KEY (P_ID)
+);
+
+CREATE TABLE Client
+(
+  C_ID INT(7)  NOT NULL AUTO_INCREMENT ,
+  FNAME VARCHAR(20) NOT NULL,
+  LNAME VARCHAR(20) NOT NULL,
+  Mobile VARCHAR(12) UNIQUE,
+  E_mail VARCHAR(32) UNIQUE,
+  Vaccination BOOLEAN NOT NULL,
+  Vac_Certificate VARCHAR(20) not null,
+  COVID_19_Report varchar(20) not null,
+  Budget int(6) not null,
+  PRIMARY KEY (C_ID)
+);
+
+CREATE TABLE Enquiry
+(
+  Emp_ID INT(7) NOT NULL,
+  C_ID INT(7) NOT NULL,
+  Subject VARCHAR(30) NOT NULL,
+  Description VARCHAR(200) NOT NULL,
+  Remark VARCHAR(200) NOT NULL,
+ 
+  FOREIGN KEY (C_ID) REFERENCES Client(C_ID),
+  FOREIGN KEY (Emp_ID) REFERENCES Employee(Emp_ID)
+);
+
+CREATE TABLE Register
+(
+  Reg_date DATE NOT NULL,
+  C_ID INT(7) NOT NULL,
+  FOREIGN KEY (C_ID) REFERENCES Client(C_ID)
+);
+
+CREATE TABLE Answer
+(
+  Answer_Date DATE NOT NULL,
+  Emp_ID INT(7) NOT NULL,
+  FOREIGN KEY (Emp_ID) REFERENCES Employee(Emp_ID)
+);
+
+CREATE TABLE Booking
+(
+  C_ID INT(7) NOT NULL,
+  B_ID INT(7) NOT NULL,
+  Pack_ID INT(7) NOT NULL,
+  cost INT(6) NOT NULL,
+
+
+  PRIMARY KEY (B_ID),
+  FOREIGN KEY (Pack_ID) REFERENCES Package(P_ID),
+  FOREIGN KEY (C_ID) REFERENCES Client(C_ID)
+);
+
+CREATE TABLE Transaction
+(
+  C_ID INT(7) NOT NULL,
+  B_ID INT(7) NOT NULL,
+  TMode VARCHAR(15) NOT NULL,
+  FOREIGN KEY (B_ID) REFERENCES Booking(B_ID),
+  FOREIGN KEY (C_ID) REFERENCES Client(C_ID)
+);
+
+ALTER TABLE Employee AUTO_INCREMENT=1000001;
+INSERT INTO Employee(FNAMAE,LNAME,Salary,Mobile,E_Mail)VALUES
+('Ahaan','Shetty',50000,8795462130,'ashetty@gmail.com'),
+('Balki','Kumar',40000,9768542130,'balkik@rediff.com'),
+('Chirag','Patil',40000,8769548213,'chiragpatil@gmail.com'),
+('Dhruv','Navani',45000,9768548212,'dna@yahoo.com'),
+('Eshwar','Chetti',42000,8695472130,'eswarc@gmail.com');
+
+ALTER TABLE Package AUTO_INCREMENT=0000001;
+INSERT INTO Package(Package_Name, Package_Type, Description, Destination, Price, Transport_Mode, Seats, Vehicle_Type, Positivity_Rate, Reservation_date)VALUES
+('Dandeli Diary','AdventurePack','4 days and 3 nights in the midst of the jungle, stay at Jungle Nest Homestay apartment','Dandeli',12500,'Jeep',7,'SUV',10,'2022-01-23'),
+('Malpe Memories','BeachPack','5 days and 4 nights at the beautiful beachy Paradise Isle Beach Resort','Malpe',17300,'Traveller',10,'MiniBus',11,'2022-02-10'),
+('Murudeshwar Mahayaatra','HolyBeachPack','3 days and 3 nights in the amidst of the holy town, stay at the comfortable Royal Oak','Murudeshwar',8300,'Car',8,'MUV',9,'2022-02-9'),
+('Go Gokarna','HolyBeachPack','4 days and 3 nights in the beautiful holy city, stay at Trippr Gokarna','Gokarna',10000,'Car',5,'Sedan',9,'2022-03-9'),
+('Monumental Hampi','HeritagePack','3 days and 3 nights at the monumental town, stay at Heritage Resort','Hampi',23600,'Traveller',10,'MiniBus',10,'2022-05-5');
+
+ALTER TABLE Client AUTO_INCREMENT=1100001;
+INSERT INTO Client(FNAME, LNAME, Mobile, E_mail, Vaccination, Vac_Certificate, COVID_19_Report, Budget)VALUES
+('Rahul','Shrivatsav',8763330254,'rahuls@gmail.com',TRUE,'Available','-',100000),
+('Mahendra','jadeja',7859642138,'mahij@yahoo.com',FALSE,'Unavailable','Negative',20000),
+('Charlie','Shinghania',9988775642,'charlie@gmail.com',TRUE,'Available','-',35000),
+('Esha','Gupta',8759463217,'eshagupta@gmail.com',TRUE,'Available','-',150000),
+('Jahnavi','shetty',6985472132,'jshetty@rediff.com',TRUE,'Available','-',40000);
+
+ INSERT INTO Enquiry(Emp_ID, C_ID, Subject, Description, Remark )VALUES
+ (1000005,1100002,'Reg. Vehicle','Is the vehicle fuel price included in the package?','Yes, the package is inclusive of all the things, including the fuel cost'), 
+ (1000002,1100005,'Reg. Hotel','Which room is allotted to us in the Hotel?','You can choose any room of your choice from the list of rooms reserved for our agency'),
+ (1000003,1100004,'Reg. Refund','If i choose to cancel the booking, will i receive my moneyback?','Yes, there is 80% refund policy on cancellations'),
+ (1000001,1100003,'Reg. Roads','Is it safe to travel by highways(many of them are having pot holes and prone to accidents)','Yes, We will travel in highwayroads,we promise customers will not have any complaints'), 
+(1000004,1100001,'Reg. Food ','Is the cost of Food included in package?,what about snacks?','Yes, You get morning breakfast,Afternoon lunch and evening snacks and dinner is also included');
+
+
+INSERT INTO Register(Reg_date, C_ID) VALUES 
+('2021-12-12', 1100005),
+('2022-01-12', 1100003), 
+('2022-01-02', 1100001), 
+('2022-02-22', 1100004), 
+('2021-12-22', 1100002);
+
+INSERT INTO Answer(Answer_Date, Emp_ID)VALUES
+('2021-12-13', 1000005),
+('2021-12-23', 1000002),
+('2022-01-03', 1000001),
+('2022-01-13', 1000003),
+('2022-02-23', 1000004);
+
+
+INSERT INTO Booking(C_ID, B_ID, Pack_ID, cost) VALUES 
+(1100002, 801, 3, 16600), 
+(1100003, 802, 4, 30000), 
+(1100005, 803, 1, 37500), 
+(1100004, 804, 5, 118000), 
+(1100001, 805, 2, 86500);
+
+INSERT INTO Transaction(C_ID, B_ID, TMode) VALUES 
+(1100003, 802, 'Debit Card'), 
+(1100004, 804, 'Credit Card'), 
+(1100005, 801, 'UPI'), 
+(1100002, 805, 'Net Banking'), 
+(1100001, 803, 'Debit Card');
+
+
+
+SELECT * FROM Employee;
+SELECT * FROM Package;
+SELECT * FROM Client;
+SELECT * FROM Enquiry;
+SELECT * FROM Register;
+SELECT * FROM Answer;
+SELECT * FROM Booking;
+SELECT * FROM Transaction;
+
+
+SELECT c.FNAME,c.LNAME
+FROM Client c, Package p, Booking b
+where c.C_ID=b.C_ID AND b.Pack_ID=p.P_ID AND p.Reservation_date='2022-05-05';
+
+CREATE VIEW Bookings AS
+SELECT c.FNAME,c.LNAME,c.Mobile,b.B_ID,p.Package_Name,p.Destination,b.cost
+FROM Client c, Booking b, Package p
+where c.C_ID=b.C_ID AND b.Pack_ID=p.P_ID;
+SELECT * FROM Bookings;
+
+DELETE FROM transaction
+where B_ID ='801';
+
+DELETE FROM booking
+where B_ID='801';
+
+SELECT * FROM transaction;
+SELECT * FROM booking;
+SELECT * FROM Bookings;
